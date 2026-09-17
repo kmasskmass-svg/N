@@ -535,6 +535,7 @@
     .content-wrap{max-width:1180px;}
   }
 </style>
+<link rel="stylesheet" href="style-enhancements.css">
 </head>
 <body>
 <header id="topbar">
@@ -1918,7 +1919,7 @@ function renderVocabStation(u){
     html += `<div class="vocab-group"><h3>${label} <span class="qtag">${items.length}</span></h3><div class="vocab-grid">`;
     items.forEach(([en,ar])=>{
       const marked = !!weakWords[en];
-      const enSafe = esc(en).replace(/'/g,"\\'"), arSafe = esc(ar).replace(/'/g,"\\'");
+      const enSafe = en.replace(/\\/g,'\\\\').replace(/'/g,"\\'"), arSafe = ar.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
       html += `<div class="vocab-item" data-cat="${key}"><span class="cat-pill">${CAT_SHORT_LABEL[key]}</span><span class="vw en">${esc(en)}</span><span class="va">${esc(ar)}</span><span class="item-actions"><button class="star-btn ${marked?'on':''}" onclick="toggleWeak(this,'${enSafe}','${arSafe}',${u.number})" title="أضف لمراجعة الكلمات الصعبة">${marked?'★':'☆'}</button></span></div>`;
     });
     html += `</div></div>`;
@@ -2012,7 +2013,7 @@ function renderQuizStation(u){
     q.fill.map((item,i)=>`
       <div class="qitem" data-idx="${i}">
         <div class="qtext">${i+1}. <span class="en">${esc(item.q)}</span></div>
-        <div class="opts">${item.bank.map(op=>`<button class="opt-btn" onclick="selectFill(this,'${esc(op).replace(/'/g,"\\'")}')"><span class="en">${esc(op)}</span></button>`).join('')}</div>
+        <div class="opts">${item.bank.map(op=>`<button class="opt-btn" onclick="selectFill(this,'${op.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')"><span class="en">${esc(op)}</span></button>`).join('')}</div>
         <div class="feedback"></div>
       </div>`).join('') + `</div>`;
 
@@ -2268,7 +2269,7 @@ function questionMarkup(item,i){
   } else {
     return `<div class="qitem" data-type="fill" data-idx="${i}" data-answer="${esc(item.answer)}">
       <div class="qtext">${i+1}. <span class="qtag">U${item.unit}</span> <span class="en">${esc(item.q)}</span></div>
-      <div class="opts">${item.bank.map(op=>`<button class="opt-btn" onclick="selectFill(this,'${esc(op).replace(/'/g,"\\'")}')"><span class="en">${esc(op)}</span></button>`).join('')}</div>
+      <div class="opts">${item.bank.map(op=>`<button class="opt-btn" onclick="selectFill(this,'${op.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')"><span class="en">${esc(op)}</span></button>`).join('')}</div>
       <div class="feedback"></div></div>`;
   }
 }
@@ -2391,7 +2392,7 @@ function renderWeak(){
   } else {
     rows = items.map(w=>`
       <div class="weak-row"><span class="vw en">${esc(w.en)}</span><span class="va">${esc(w.ar)}</span><span class="wtag">الوحدة ${w.unit}</span>
-      <button class="rm-btn" onclick="removeWeakRow('${esc(w.en).replace(/'/g,"\\'")}')">✕ إزالة</button></div>`).join('');
+      <button class="rm-btn" onclick="removeWeakRow('${w.en.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')">✕ إزالة</button></div>`).join('');
   }
   document.getElementById('content').innerHTML = `
     <div class="page-header">
@@ -2441,7 +2442,7 @@ function paintGlossary(){
   if(filtered.length===0){ grid.innerHTML = `<p style="color:var(--ink-faint);">لا نتائج مطابقة.</p>`; return; }
   const marked = w=>!!weakWords[w];
   grid.innerHTML = filtered.map(e=>{
-    const enSafe=esc(e.en).replace(/'/g,"\\'"), arSafe=esc(e.ar).replace(/'/g,"\\'");
+    const enSafe=e.en.replace(/\\/g,'\\\\').replace(/'/g,"\\'"), arSafe=e.ar.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     return `<div class="vocab-item"><span class="vw en">${esc(e.en)}</span><span class="va">${esc(e.ar)} <span class="wtag">U${e.unit}</span></span><span class="item-actions"><button class="star-btn ${marked(e.en)?'on':''}" onclick="toggleWeak(this,'${enSafe}','${arSafe}',${e.unit}); paintGlossary();">${marked(e.en)?'★':'☆'}</button></span></div>`;
   }).join('');
 }
@@ -2504,5 +2505,6 @@ window.addEventListener('hashchange', render);
 
 if(window.claude?.hot){ window.claude.hot.snapshot?.(()=>({})); }
 </script>
+<script src="script-enhancements.js"></script>
 </body>
 </html>
