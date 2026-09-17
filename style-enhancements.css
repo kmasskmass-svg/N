@@ -1,0 +1,79 @@
+:root {
+  --focus-ring: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+#siteProgress {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  height: 4px;
+  z-index: 999;
+  pointer-events: none;
+  background: transparent;
+}
+
+#siteProgress span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: 0 999px 999px 0;
+  background: linear-gradient(90deg, var(--accent), var(--primary));
+  transition: width .35s ease;
+}
+
+.resume-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 0 0 22px;
+  padding: 16px 18px;
+  background: linear-gradient(135deg, var(--surface), var(--primary-soft));
+  border: 2px solid var(--primary-soft);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+
+.resume-card .resume-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.resume-card b { font-size: .92rem; }
+.resume-card span { color: var(--ink-soft); font-size: .76rem; }
+
+.btn,
+.icon-btn,
+.nav-chip,
+.rail-chip,
+.tool-tile,
+.j-card,
+.stat-tile,
+.badge {
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, background-color .2s ease;
+}
+
+.btn:hover:not(:disabled),
+.tool-tile:hover,
+.j-card:hover,
+.stat-tile:hover {
+  box-shadow: 0 14px 28px -16px color-mix(in srgb, var(--primary) 55%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .resume-card { flex-direction: column; align-items: stretch; }
+  .resume-card .btn { width: 100%; justify-content: center; }
+  .btn { min-height: 44px; }
+  .icon-btn { min-width: 42px; min-height: 42px; }
+  .vocab-item, .weak-row { min-height: 52px; }
+}
